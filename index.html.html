@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Asociación de Fútbol de Renca – Fixture 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --green:#00c853; --green2:#69f0ae;
+  --dark:#0d1117; --surface:#161b22; --surface2:#1c2230; --surface3:#21293a;
+  --border:#30363d; --text:#e6edf3; --muted:#7d8590;
+  --white:#ffffff; --red:#f85149; --yellow:#d29922;
+  --senior-color:#f97316; --adulto-color:#3b82f6; --infantil-color:#a855f7;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html{scroll-behavior:smooth;}
+body{font-family:'Barlow',sans-serif;background:var(--dark);color:var(--text);min-height:100vh;}
+
+.header{background:linear-gradient(135deg,#0d1f0f 0%,#0d1117 50%,#0f1520 100%);border-bottom:1px solid var(--border);padding:20px 16px 16px;text-align:center;position:relative;overflow:hidden;}
+.header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(0,200,83,0.12) 0%,transparent 70%);pointer-events:none;}
+.escudo{width:56px;height:56px;background:linear-gradient(135deg,var(--green),#00874a);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:26px;box-shadow:0 0 24px rgba(0,200,83,0.35);}
+.header h1{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(20px,5vw,30px);letter-spacing:2px;text-transform:uppercase;color:var(--white);line-height:1.1;}
+.header-sub{font-size:12px;color:var(--green);letter-spacing:3px;text-transform:uppercase;margin-top:4px;font-family:'JetBrains Mono',monospace;}
+.tournament-name-display{font-family:'Barlow Condensed',sans-serif;font-size:clamp(14px,3vw,20px);font-weight:700;color:var(--yellow);letter-spacing:1px;margin-top:6px;min-height:22px;}
+.tournament-dates-display{font-size:12px;color:var(--muted);margin-top:3px;font-family:'JetBrains Mono',monospace;min-height:16px;}
+
+.nav-wrap{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
+.nav-tabs{display:flex;overflow-x:auto;scrollbar-width:none;}
+.nav-tabs::-webkit-scrollbar{display:none;}
+.nav-tab{flex-shrink:0;padding:14px 24px;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);cursor:pointer;border-bottom:3px solid transparent;border-top:none;border-left:none;border-right:none;transition:all 0.2s;white-space:nowrap;background:none;}
+.nav-tab:hover{color:var(--text);}
+.nav-tab.active{color:var(--green);border-bottom-color:var(--green);}
+
+.main{padding:16px;max-width:900px;margin:0 auto;}
+.page{display:none;animation:fadeIn 0.3s ease;}
+.page.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+.category-block{margin-bottom:32px;}
+.cat-header{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--border);}
+.cat-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.cat-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:20px;letter-spacing:2px;text-transform:uppercase;}
+.cat-count{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);background:var(--surface2);padding:2px 10px;border-radius:99px;margin-left:auto;}
+
+.series-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;}
+.serie-card{background:var(--surface2);border:1px solid var(--border);border-radius:10px;overflow:hidden;cursor:pointer;transition:border-color 0.2s,transform 0.15s;}
+.serie-card:hover{transform:translateY(-2px);}
+.serie-card.no-fixture{cursor:default;opacity:0.65;}
+.serie-card.no-fixture:hover{transform:none;}
+.serie-card-top{padding:14px 14px 8px;}
+.serie-badge{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:99px;display:inline-block;margin-bottom:8px;}
+.serie-name{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:20px;line-height:1.2;}
+.serie-info{padding:0 14px 10px;display:flex;gap:16px;}
+.serie-stat{font-size:12px;color:var(--muted);}
+.serie-stat strong{color:var(--text);font-family:'JetBrains Mono',monospace;display:block;font-size:15px;}
+.serie-action{padding:10px 14px;border-top:1px solid var(--border);font-size:12px;font-weight:600;}
+
+.detail-header{display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;}
+.btn-back{background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:8px 14px;border-radius:8px;font-size:13px;cursor:pointer;font-family:'Barlow',sans-serif;transition:all 0.2s;flex-shrink:0;}
+.btn-back:hover{border-color:var(--green);color:var(--green);}
+.detail-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:24px;letter-spacing:1px;text-transform:uppercase;line-height:1.2;}
+.detail-subtitle{font-size:12px;color:var(--muted);margin-top:2px;}
+.btn-pdf{background:linear-gradient(135deg,#dc2626,#ef4444);border:none;color:#fff;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:1px;padding:9px 18px;border-radius:8px;cursor:pointer;transition:opacity 0.2s;white-space:nowrap;margin-left:auto;}
+.btn-pdf:hover{opacity:0.85;}
+
+.fecha-scroll{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin-bottom:18px;padding-bottom:4px;}
+.fecha-scroll::-webkit-scrollbar{display:none;}
+.fecha-btn{flex-shrink:0;background:var(--surface2);border:1px solid var(--border);color:var(--muted);padding:6px 14px;border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:11px;cursor:pointer;transition:all 0.2s;}
+.fecha-btn:hover{border-color:var(--green2);color:var(--green2);}
+.fecha-btn.active{background:rgba(0,200,83,0.12);border-color:var(--green);color:var(--green);}
+
+.fecha-section{margin-bottom:24px;}
+.fecha-label{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+.fecha-label::after{content:'';flex:1;height:1px;background:var(--border);}
+.match-row{background:var(--surface2);border:1px solid var(--border);border-radius:8px;display:flex;align-items:center;padding:11px 14px;gap:10px;margin-bottom:6px;}
+.match-num-badge{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);min-width:28px;}
+.match-team-home{flex:1;text-align:right;font-weight:500;font-size:14px;}
+.match-vs{background:var(--surface3);border:1px solid var(--border);border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);padding:2px 7px;flex-shrink:0;}
+.match-team-away{flex:1;font-weight:500;font-size:14px;}
+.libre-tag{font-size:11px;color:var(--muted);background:var(--surface3);border:1px solid var(--border);padding:2px 8px;border-radius:4px;font-family:'JetBrains Mono',monospace;}
+
+/* LOCK */
+.lock-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;text-align:center;}
+.lock-icon{font-size:48px;margin-bottom:16px;}
+.lock-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:24px;letter-spacing:2px;text-transform:uppercase;color:var(--yellow);margin-bottom:6px;}
+.lock-sub{font-size:13px;color:var(--muted);margin-bottom:24px;}
+.lock-form{display:flex;flex-direction:column;gap:10px;width:100%;max-width:300px;}
+.pwd-input{background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:12px 16px;border-radius:10px;font-size:15px;outline:none;font-family:'JetBrains Mono',monospace;text-align:center;letter-spacing:3px;transition:border-color 0.2s;}
+.pwd-input:focus{border-color:var(--yellow);}
+.pwd-input.error{border-color:var(--red);animation:shake 0.3s ease;}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.btn-unlock{background:linear-gradient(135deg,#d29922,#f59e0b);border:none;color:#000;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:15px;letter-spacing:2px;padding:12px;border-radius:10px;cursor:pointer;transition:opacity 0.2s;text-transform:uppercase;}
+.btn-unlock:hover{opacity:0.9;}
+.pwd-error{color:var(--red);font-size:12px;min-height:16px;}
+.admin-topbar{display:flex;align-items:center;margin-bottom:20px;}
+.admin-topbar-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;letter-spacing:1px;color:var(--yellow);}
+.btn-logout{background:transparent;border:1px solid var(--border);color:var(--muted);font-size:12px;padding:5px 14px;border-radius:6px;cursor:pointer;font-family:'Barlow',sans-serif;transition:all 0.2s;margin-left:auto;}
+.btn-logout:hover{border-color:var(--red);color:var(--red);}
+
+.admin-section{margin-bottom:32px;}
+.admin-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:19px;letter-spacing:2px;text-transform:uppercase;color:var(--yellow);margin-bottom:16px;display:flex;align-items:center;gap:10px;}
+.admin-title::after{content:'';flex:1;height:1px;background:var(--border);}
+
+.config-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+@media(max-width:500px){.config-grid{grid-template-columns:1fr;}}
+.field label{display:block;font-size:11px;color:var(--muted);margin-bottom:6px;letter-spacing:1px;text-transform:uppercase;}
+.input-field{width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:9px 14px;border-radius:8px;font-family:'Barlow',sans-serif;font-size:14px;outline:none;transition:border-color 0.2s;}
+.input-field:focus{border-color:var(--green);}
+.input-field::placeholder{color:var(--muted);}
+.input-date{font-family:'JetBrains Mono',monospace;font-size:13px;color-scheme:dark;}
+
+.import-box{background:var(--surface2);border:1px dashed var(--border);border-radius:8px;padding:12px;margin-bottom:10px;}
+.import-box label{display:block;font-size:11px;color:var(--muted);margin-bottom:6px;letter-spacing:1px;text-transform:uppercase;}
+.import-box textarea{width:100%;background:transparent;border:none;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:12px;resize:none;outline:none;height:80px;}
+.import-box textarea::placeholder{color:var(--border);}
+.clubs-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center;}
+.input-inline{flex:1;min-width:180px;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:9px 14px;border-radius:8px;font-family:'Barlow',sans-serif;font-size:14px;outline:none;transition:border-color 0.2s;}
+.input-inline:focus{border-color:var(--green);}
+.input-inline::placeholder{color:var(--muted);}
+.btn-green{background:var(--green);border:none;color:#000;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:1px;padding:9px 20px;border-radius:8px;cursor:pointer;transition:opacity 0.2s;white-space:nowrap;}
+.btn-green:hover{opacity:0.85;}
+.btn-outline{background:transparent;border:1px solid var(--border);color:var(--text);font-family:'Barlow',sans-serif;font-size:13px;padding:8px 16px;border-radius:8px;cursor:pointer;transition:all 0.2s;}
+.btn-outline:hover{border-color:var(--green);color:var(--green);}
+
+.club-list{display:flex;flex-direction:column;gap:6px;max-height:360px;overflow-y:auto;padding-right:4px;}
+.club-list::-webkit-scrollbar{width:3px;}
+.club-list::-webkit-scrollbar-thumb{background:var(--border);}
+.club-item{background:var(--surface3);border:1px solid var(--border);border-radius:8px;padding:10px 14px;display:flex;align-items:center;gap:10px;}
+.club-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);min-width:24px;}
+.club-name-label{flex:1;font-weight:500;font-size:14px;}
+.club-series-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px;}
+.stag{font-size:10px;padding:2px 8px;border-radius:99px;font-family:'JetBrains Mono',monospace;}
+.btn-del{background:none;border:none;color:var(--muted);cursor:pointer;font-size:18px;padding:2px 6px;border-radius:4px;transition:color 0.2s;line-height:1;}
+.btn-del:hover{color:var(--red);}
+
+.club-select{width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:10px 14px;border-radius:8px;font-family:'Barlow',sans-serif;font-size:14px;outline:none;margin-bottom:14px;}
+.club-select option{background:var(--surface2);}
+.cat-group-label{font-size:12px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;margin:14px 0 8px;}
+.series-checks{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:7px;}
+.check-label{display:flex;align-items:center;gap:8px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:9px 12px;cursor:pointer;transition:border-color 0.2s;font-size:13px;font-weight:500;}
+.check-label:hover{border-color:var(--green);}
+.check-label input[type=checkbox]{accent-color:var(--green);width:15px;height:15px;}
+
+.serie-gen-list{display:flex;flex-direction:column;gap:7px;margin-bottom:14px;}
+.serie-gen-item{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.serie-gen-spacer{flex:1;}
+.gen-ok{color:var(--green);font-size:12px;}
+.gen-warn{color:var(--yellow);font-size:12px;}
+.gen-pending{color:var(--muted);font-size:12px;}
+
+.alert{padding:11px 16px;border-radius:8px;font-size:13px;margin-bottom:14px;display:none;}
+.alert.success{background:rgba(0,200,83,0.1);border:1px solid rgba(0,200,83,0.3);color:var(--green);}
+.alert.error{background:rgba(248,81,73,0.1);border:1px solid rgba(248,81,73,0.3);color:var(--red);}
+.alert.show{display:block;}
+.empty-state{text-align:center;padding:32px 16px;color:var(--muted);font-size:13px;}
+.empty-state .icon{font-size:32px;margin-bottom:8px;}
+
+@media print{
+  body *{visibility:hidden !important;}
+  #pdf-print-area,#pdf-print-area *{visibility:visible !important;}
+  #pdf-print-area{position:fixed !important;inset:0 !important;background:white !important;color:black !important;font-family:Arial,sans-serif !important;padding:24px !important;font-size:12px !important;z-index:99999 !important;}
+  .pdf-header{text-align:center;margin-bottom:20px;border-bottom:2px solid #000;padding-bottom:12px;}
+  .pdf-assoc{font-size:11px;color:#555;text-transform:uppercase;letter-spacing:2px;}
+  .pdf-tournament{font-size:22px;font-weight:900;text-transform:uppercase;letter-spacing:1px;margin:4px 0;}
+  .pdf-serie{font-size:16px;font-weight:700;color:#333;}
+  .pdf-dates{font-size:11px;color:#666;margin-top:4px;}
+  .pdf-round{margin-bottom:14px;}
+  .pdf-round-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;background:#f0f0f0;padding:4px 8px;margin-bottom:4px;}
+  .pdf-match{display:flex;align-items:center;padding:5px 8px;border-bottom:1px solid #eee;font-size:12px;}
+  .pdf-match-num{min-width:28px;color:#999;font-size:10px;}
+  .pdf-team-home{flex:1;text-align:right;font-weight:500;}
+  .pdf-vs{margin:0 10px;color:#aaa;font-size:10px;}
+  .pdf-team-away{flex:1;font-weight:500;}
+  .pdf-libre{color:#888;font-size:10px;font-style:italic;margin-left:8px;}
+  .pdf-footer{margin-top:20px;text-align:center;font-size:10px;color:#aaa;border-top:1px solid #eee;padding-top:8px;}
+}
+
+@media(max-width:480px){.match-team-home,.match-team-away{font-size:12px;}}
+::-webkit-scrollbar{width:4px;height:4px;}
+::-webkit-scrollbar-track{background:var(--surface);}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+</style>
+</head>
+<body>
+
+<div id="pdf-print-area" style="display:none"></div>
+
+<div class="header">
+  <div class="escudo">⚽</div>
+  <h1>Asociación de Fútbol<br>de Renca</h1>
+  <div class="header-sub">Programación Oficial</div>
+  <div class="tournament-name-display" id="header-tournament-name"></div>
+  <div class="tournament-dates-display" id="header-tournament-dates"></div>
+</div>
+
+<div class="nav-wrap">
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showPage('home',this)">🏟️ Programación</button>
+    <button class="nav-tab" onclick="handleAdminClick(this)">🔐 Administrar</button>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- PROGRAMACIÓN -->
+  <div class="page active" id="page-home">
+    <div id="fixture-list-view">
+      <div class="category-block">
+        <div class="cat-header">
+          <div class="cat-dot" style="background:var(--senior-color)"></div>
+          <div class="cat-title" style="color:var(--senior-color)">Seniors</div>
+          <div class="cat-count" id="count-senior"></div>
+        </div>
+        <div class="series-grid" id="grid-senior"></div>
+      </div>
+      <div class="category-block">
+        <div class="cat-header">
+          <div class="cat-dot" style="background:var(--adulto-color)"></div>
+          <div class="cat-title" style="color:var(--adulto-color)">Adultos</div>
+          <div class="cat-count" id="count-adulto"></div>
+        </div>
+        <div class="series-grid" id="grid-adulto"></div>
+      </div>
+      <div class="category-block">
+        <div class="cat-header">
+          <div class="cat-dot" style="background:var(--infantil-color)"></div>
+          <div class="cat-title" style="color:var(--infantil-color)">Infantiles y Juveniles</div>
+          <div class="cat-count" id="count-infantil"></div>
+        </div>
+        <div class="series-grid" id="grid-infantil"></div>
+      </div>
+    </div>
+
+    <div id="fixture-detail" style="display:none">
+      <div class="detail-header">
+        <button class="btn-back" onclick="closeDetail()">← Volver</button>
+        <div style="flex:1">
+          <div class="detail-title" id="detail-title"></div>
+          <div class="detail-subtitle" id="detail-subtitle"></div>
+        </div>
+        <button class="btn-pdf" onclick="exportPDF()">🖨️ Guardar PDF</button>
+      </div>
+      <div class="fecha-scroll" id="fecha-scroll"></div>
+      <div id="rounds-detail"></div>
+    </div>
+  </div>
+
+  <!-- ADMINISTRAR -->
+  <div class="page" id="page-admin">
+    <div id="lock-screen" class="lock-screen">
+      <div class="lock-icon">🔒</div>
+      <div class="lock-title">Área Restringida</div>
+      <div class="lock-sub">Solo administradores de la Asociación de Fútbol de Renca</div>
+      <div class="lock-form">
+        <div style="position:relative;width:100%">
+          <input type="password" class="pwd-input" id="pwd-input" placeholder="Ingresa la clave" style="width:100%;letter-spacing:1px;padding-right:46px" onkeydown="if(event.key==='Enter')checkPassword()">
+          <button onclick="togglePwd()" type="button" title="Mostrar/ocultar" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--muted);cursor:pointer;font-size:17px;line-height:1;">👁</button>
+        </div>
+        <div class="pwd-error" id="pwd-error"></div>
+        <button class="btn-unlock" onclick="checkPassword()">🔓 Ingresar</button>
+      </div>
+    </div>
+
+    <div id="admin-panel" style="display:none">
+      <div class="admin-topbar">
+        <div class="admin-topbar-title">⚙️ Panel de Administración</div>
+        <button class="btn-logout" onclick="logout()">🔒 Cerrar sesión</button>
+      </div>
+      <div class="alert" id="alert-msg"></div>
+
+      <div class="admin-section">
+        <div class="admin-title">0 · Datos del Campeonato</div>
+        <div class="field" style="margin-bottom:12px">
+          <label>Nombre del Campeonato</label>
+          <input type="text" class="input-field" id="tournament-name-input" placeholder="Ej: Copa Renca 2026 · Torneo Apertura..." oninput="saveTournamentInfo()">
+        </div>
+        <div class="config-grid">
+          <div class="field">
+            <label>Fecha de Inicio</label>
+            <input type="date" class="input-field input-date" id="tournament-date-from" onchange="saveTournamentInfo()">
+          </div>
+          <div class="field">
+            <label>Fecha de Término</label>
+            <input type="date" class="input-field input-date" id="tournament-date-to" onchange="saveTournamentInfo()">
+          </div>
+        </div>
+      </div>
+
+      <div class="admin-section">
+        <div class="admin-title">1 · Ingresar Clubes</div>
+        <div class="import-box">
+          <label>📋 Pega aquí la lista completa (un club por línea)</label>
+          <textarea id="import-clubs" placeholder="Club Deportivo Renca&#10;Unión Independiente&#10;Atlético Cóndores&#10;..."></textarea>
+        </div>
+        <div class="clubs-toolbar">
+          <button class="btn-outline" onclick="importClubs()">↑ Importar lista</button>
+          <input type="text" class="input-inline" id="new-club-input" placeholder="O escribe el nombre del club..." onkeydown="if(event.key==='Enter')addClub()">
+          <button class="btn-green" onclick="addClub()">+ Agregar</button>
+        </div>
+        <div class="club-list" id="club-list"></div>
+      </div>
+
+      <div class="admin-section">
+        <div class="admin-title">2 · Asignar Series a Cada Club</div>
+        <select class="club-select" id="assign-club-select"></select>
+        <div class="cat-group-label" style="color:var(--senior-color)">🟠 Seniors</div>
+        <div class="series-checks" id="checks-senior"></div>
+        <div class="cat-group-label" style="color:var(--adulto-color)">🔵 Adultos</div>
+        <div class="series-checks" id="checks-adulto"></div>
+        <div class="cat-group-label" style="color:var(--infantil-color)">🟣 Infantiles y Juveniles</div>
+        <div class="series-checks" id="checks-infantil"></div>
+        <button class="btn-green" onclick="saveAssignment()" style="width:100%;margin-top:14px">💾 Guardar asignación</button>
+      </div>
+
+      <div class="admin-section">
+        <div class="admin-title">3 · Generar Fixtures</div>
+        <div class="serie-gen-list" id="serie-gen-list"></div>
+        <button class="btn-green" onclick="generateAllFixtures()" style="width:100%">⚡ GENERAR TODOS LOS FIXTURES</button>
+      </div>
+
+      <div class="admin-section">
+        <div class="admin-title" style="color:var(--red)">⚠ Zona de Riesgo</div>
+        <button class="btn-outline" style="border-color:var(--red);color:var(--red)" onclick="resetAll()">🗑 Borrar todo y empezar de cero</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const ADMIN_PASSWORD = 'RENCAHISTORICA2026';
+function togglePwd(){
+  const inp=document.getElementById('pwd-input');
+  inp.type = inp.type==='password' ? 'text' : 'password';
+}
+let adminUnlocked = false;
+
+// 9 SERIES — Adultos: Honor + Ascenso
+const SERIES = [
+  { id:'senior',        name:'Senior',               cat:'senior',   color:'#f97316' },
+  { id:'super_senior',  name:'Super Senior',          cat:'senior',   color:'#fb923c' },
+  { id:'dorados',       name:'Dorados',               cat:'senior',   color:'#fbbf24' },
+  { id:'honor_adultos', name:'Serie Honor Adultos',   cat:'adulto',   color:'#3b82f6' },
+  { id:'ascenso_adultos',name:'Serie Ascenso Adultos',cat:'adulto',   color:'#60a5fa' },
+  { id:'3infantil',     name:'3° Infantil',           cat:'infantil', color:'#c084fc' },
+  { id:'2infantil',     name:'2° Infantil',           cat:'infantil', color:'#a855f7' },
+  { id:'1infantil',     name:'1° Infantil',           cat:'infantil', color:'#7c3aed' },
+  { id:'juvenil',       name:'Juveniles',             cat:'infantil', color:'#ec4899' },
+];
+const CAT_NAMES = { senior:'Seniors', adulto:'Adultos', infantil:'Infantiles y Juveniles' };
+
+let clubs=[], assignments={}, fixtures={}, tournamentInfo={name:'',dateFrom:'',dateTo:''};
+let currentSerie=null;
+loadData();
+
+function saveData(){
+  try{
+    localStorage.setItem('renca_clubs', JSON.stringify(clubs));
+    localStorage.setItem('renca_assignments', JSON.stringify(assignments));
+    localStorage.setItem('renca_fixtures', JSON.stringify(fixtures));
+    localStorage.setItem('renca_tournament', JSON.stringify(tournamentInfo));
+  }catch(e){}
+}
+function loadData(){
+  try{
+    clubs          = JSON.parse(localStorage.getItem('renca_clubs')       || '[]');
+    assignments    = JSON.parse(localStorage.getItem('renca_assignments') || '{}');
+    fixtures       = JSON.parse(localStorage.getItem('renca_fixtures')    || '{}');
+    tournamentInfo = JSON.parse(localStorage.getItem('renca_tournament')  || '{"name":"","dateFrom":"","dateTo":""}');
+  }catch(e){ clubs=[]; assignments={}; fixtures={}; tournamentInfo={name:'',dateFrom:'',dateTo:''}; }
+}
+
+function saveTournamentInfo(){
+  tournamentInfo.name     = document.getElementById('tournament-name-input').value.trim();
+  tournamentInfo.dateFrom = document.getElementById('tournament-date-from').value;
+  tournamentInfo.dateTo   = document.getElementById('tournament-date-to').value;
+  saveData(); updateHeaderInfo();
+}
+function updateHeaderInfo(){
+  const nameEl  = document.getElementById('header-tournament-name');
+  const datesEl = document.getElementById('header-tournament-dates');
+  nameEl.textContent = tournamentInfo.name || '';
+  if(tournamentInfo.dateFrom && tournamentInfo.dateTo)
+    datesEl.textContent = `${formatDate(tournamentInfo.dateFrom)}  →  ${formatDate(tournamentInfo.dateTo)}`;
+  else if(tournamentInfo.dateFrom)
+    datesEl.textContent = `Desde: ${formatDate(tournamentInfo.dateFrom)}`;
+  else datesEl.textContent='';
+}
+function formatDate(d){
+  if(!d) return '';
+  const [y,m,day]=d.split('-');
+  const months=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  return `${day} ${months[parseInt(m)-1]} ${y}`;
+}
+function loadTournamentInputs(){
+  document.getElementById('tournament-name-input').value = tournamentInfo.name||'';
+  document.getElementById('tournament-date-from').value  = tournamentInfo.dateFrom||'';
+  document.getElementById('tournament-date-to').value    = tournamentInfo.dateTo||'';
+}
+
+// AUTH
+function handleAdminClick(btn){
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-admin').classList.add('active');
+  if(adminUnlocked){ showAdminPanel(); }
+  else{
+    document.getElementById('lock-screen').style.display='flex';
+    document.getElementById('admin-panel').style.display='none';
+    setTimeout(()=>document.getElementById('pwd-input').focus(),100);
+  }
+}
+function checkPassword(){
+  const inp=document.getElementById('pwd-input');
+  const err=document.getElementById('pwd-error');
+  const val=inp.value.trim();
+  if(val===ADMIN_PASSWORD){
+    adminUnlocked=true; inp.value=''; err.textContent=''; showAdminPanel();
+  } else {
+    inp.classList.add('error');
+    err.textContent='❌ Clave incorrecta. Inténtalo de nuevo.';
+    setTimeout(()=>inp.classList.remove('error'),400);
+    inp.value=''; inp.focus();
+  }
+}
+function showAdminPanel(){
+  document.getElementById('lock-screen').style.display='none';
+  document.getElementById('admin-panel').style.display='block';
+  loadTournamentInputs(); renderAdmin();
+}
+function logout(){
+  if(!confirm('¿Cerrar sesión de administrador?')) return;
+  adminUnlocked=false;
+  document.getElementById('lock-screen').style.display='flex';
+  document.getElementById('admin-panel').style.display='none';
+}
+
+// NAV
+function showPage(p,btn){
+  document.querySelectorAll('.page').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(el=>el.classList.remove('active'));
+  document.getElementById('page-'+p).classList.add('active');
+  if(btn) btn.classList.add('active');
+  if(p==='home') renderHome();
+}
+
+// HOME
+function renderHome(){
+  updateHeaderInfo();
+  document.getElementById('fixture-list-view').style.display='block';
+  document.getElementById('fixture-detail').style.display='none';
+  ['senior','adulto','infantil'].forEach(cat=>{
+    const grid=document.getElementById('grid-'+cat);
+    const catSeries=SERIES.filter(s=>s.cat===cat);
+    grid.innerHTML=''; let withFix=0;
+    catSeries.forEach(serie=>{
+      const fix=fixtures[serie.id]||[];
+      const clubsIn=getClubsInSerie(serie.id);
+      const hasFix=fix.length>0;
+      if(hasFix) withFix++;
+      const card=document.createElement('div');
+      card.className='serie-card'+(hasFix?'':' no-fixture');
+      card.style.borderColor=hasFix?serie.color+'44':'';
+      if(hasFix) card.onclick=()=>openDetail(serie);
+      card.innerHTML=`
+        <div class="serie-card-top">
+          <span class="serie-badge" style="background:${serie.color}22;color:${serie.color}">${CAT_NAMES[cat]}</span>
+          <div class="serie-name">${serie.name}</div>
+        </div>
+        <div class="serie-info">
+          <div class="serie-stat"><strong>${clubsIn.length}</strong>clubes</div>
+          <div class="serie-stat"><strong>${hasFix?fix.length:'—'}</strong>fechas</div>
+          <div class="serie-stat"><strong>${hasFix?countMatches(fix):'—'}</strong>partidos</div>
+        </div>
+        <div class="serie-action" style="color:${hasFix?serie.color:'var(--muted)'}">
+          ${hasFix?'📅 Ver programación →':'Sin fixture generado'}
+        </div>`;
+      grid.appendChild(card);
+    });
+    document.getElementById('count-'+cat).textContent=`${withFix}/${catSeries.length} con fixture`;
+  });
+}
+function countMatches(rounds){return rounds.reduce((s,r)=>s+r.filter(m=>m.home!=='__BYE__'&&m.away!=='__BYE__').length,0);}
+function getClubsInSerie(sid){return clubs.filter(c=>(assignments[c.id]||[]).includes(sid));}
+
+// DETAIL
+function openDetail(serie){
+  currentSerie=serie;
+  document.getElementById('fixture-list-view').style.display='none';
+  document.getElementById('fixture-detail').style.display='block';
+  const fix=fixtures[serie.id]||[];
+  document.getElementById('detail-title').textContent=serie.name.toUpperCase();
+  document.getElementById('detail-subtitle').textContent=`${getClubsInSerie(serie.id).length} clubes · ${fix.length} fechas · ${countMatches(fix)} partidos`;
+  const scroll=document.getElementById('fecha-scroll');
+  scroll.innerHTML=`<button class="fecha-btn active" onclick="filterFecha('all',this)">Todas</button>`;
+  fix.forEach((_,i)=>{
+    const btn=document.createElement('button');
+    btn.className='fecha-btn'; btn.textContent=`Fecha ${i+1}`;
+    btn.onclick=()=>filterFecha(i,btn); scroll.appendChild(btn);
+  });
+  renderDetailRounds('all',serie);
+}
+function closeDetail(){
+  document.getElementById('fixture-list-view').style.display='block';
+  document.getElementById('fixture-detail').style.display='none';
+}
+function filterFecha(idx,btn){
+  document.querySelectorAll('.fecha-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active'); renderDetailRounds(idx,currentSerie);
+}
+function renderDetailRounds(filter,serie){
+  const fix=fixtures[serie.id]||[];
+  const container=document.getElementById('rounds-detail'); container.innerHTML='';
+  const toRender=filter==='all'?fix.map((r,i)=>({r,i})):[{r:fix[Number(filter)],i:Number(filter)}];
+  toRender.forEach(({r,i})=>{
+    const real=r.filter(m=>m.home!=='__BYE__'&&m.away!=='__BYE__');
+    const byeM=r.find(m=>m.home==='__BYE__'||m.away==='__BYE__');
+    const byeClub=byeM?(byeM.home==='__BYE__'?byeM.away:byeM.home):null;
+    const sec=document.createElement('div'); sec.className='fecha-section';
+    const libreHtml=byeClub?`&nbsp;<span class="libre-tag">Libre: ${byeClub}</span>`:'';
+    sec.innerHTML=`<div class="fecha-label">FECHA ${i+1}${libreHtml}</div>`;
+    real.forEach((m,mi)=>{
+      const row=document.createElement('div'); row.className='match-row';
+      row.innerHTML=`<span class="match-num-badge">${String(mi+1).padStart(2,'0')}</span>
+        <span class="match-team-home">${m.home}</span>
+        <span class="match-vs">VS</span>
+        <span class="match-team-away">${m.away}</span>`;
+      sec.appendChild(row);
+    });
+    container.appendChild(sec);
+  });
+}
+
+// PDF
+function exportPDF(){
+  if(!currentSerie) return;
+  const fix=fixtures[currentSerie.id]||[];
+  const tName=tournamentInfo.name||'Asociación de Fútbol de Renca';
+  const tFrom=tournamentInfo.dateFrom?formatDate(tournamentInfo.dateFrom):'';
+  const tTo=tournamentInfo.dateTo?formatDate(tournamentInfo.dateTo):'';
+  const datesStr=tFrom&&tTo?`${tFrom} → ${tTo}`:tFrom||'';
+  let matchesHTML='';
+  fix.forEach((r,i)=>{
+    const real=r.filter(m=>m.home!=='__BYE__'&&m.away!=='__BYE__');
+    const byeM=r.find(m=>m.home==='__BYE__'||m.away==='__BYE__');
+    const byeClub=byeM?(byeM.home==='__BYE__'?byeM.away:byeM.home):null;
+    const libreHtml=byeClub?`<span class="pdf-libre">· Libre: ${byeClub}</span>`:'';
+    matchesHTML+=`<div class="pdf-round"><div class="pdf-round-title">FECHA ${i+1} ${libreHtml}</div>`;
+    real.forEach((m,mi)=>{
+      matchesHTML+=`<div class="pdf-match">
+        <span class="pdf-match-num">${String(mi+1).padStart(2,'0')}</span>
+        <span class="pdf-team-home">${m.home}</span>
+        <span class="pdf-vs">VS</span>
+        <span class="pdf-team-away">${m.away}</span>
+      </div>`;
+    });
+    matchesHTML+=`</div>`;
+  });
+  const printArea=document.getElementById('pdf-print-area');
+  printArea.innerHTML=`
+    <div class="pdf-header">
+      <div class="pdf-assoc">Asociación de Fútbol de Renca</div>
+      <div class="pdf-tournament">${tName}</div>
+      <div class="pdf-serie">Serie: ${currentSerie.name}</div>
+      ${datesStr?`<div class="pdf-dates">📅 ${datesStr}</div>`:''}
+    </div>
+    ${matchesHTML}
+    <div class="pdf-footer">Generado por el Sistema de Fixture · Asociación de Fútbol de Renca</div>`;
+  printArea.style.display='block';
+  setTimeout(()=>{ window.print(); setTimeout(()=>{printArea.style.display='none';},500); },200);
+}
+
+// ADMIN
+function renderAdmin(){renderClubList();renderClubSelect();renderCheckboxes();renderSerieGenList();}
+function addClub(){
+  const inp=document.getElementById('new-club-input');
+  const name=inp.value.trim();
+  if(!name) return;
+  if(clubs.find(c=>c.name.toLowerCase()===name.toLowerCase())){showAlert('Este club ya existe.','error');return;}
+  if(clubs.length>=40){showAlert('Máximo 40 clubes.','error');return;}
+  clubs.push({id:Date.now().toString()+Math.random(),name});
+  inp.value=''; saveData(); renderAdmin();
+  showAlert(`"${name}" agregado correctamente.`,'success');
+}
+function importClubs(){
+  const text=document.getElementById('import-clubs').value.trim();
+  if(!text) return;
+  const names=text.split('\n').map(l=>l.trim()).filter(Boolean);
+  let added=0;
+  names.forEach(name=>{
+    if(!clubs.find(c=>c.name.toLowerCase()===name.toLowerCase())&&clubs.length<40){
+      clubs.push({id:Date.now().toString()+Math.random(),name}); added++;
+    }
+  });
+  document.getElementById('import-clubs').value='';
+  saveData(); renderAdmin();
+  showAlert(`${added} club(es) importados correctamente.`,'success');
+}
+function deleteClub(id){
+  if(!confirm('¿Eliminar este club?')) return;
+  clubs=clubs.filter(c=>c.id!==id); delete assignments[id];
+  saveData(); renderAdmin();
+}
+function renderClubList(){
+  const list=document.getElementById('club-list'); list.innerHTML='';
+  if(!clubs.length){list.innerHTML='<div class="empty-state"><div class="icon">🏟️</div>No hay clubes aún.<br>Agrega o importa tu lista arriba.</div>';return;}
+  clubs.forEach((club,i)=>{
+    const assigned=assignments[club.id]||[];
+    const tags=assigned.map(sid=>{const s=SERIES.find(x=>x.id===sid);return s?`<span class="stag" style="background:${s.color}22;color:${s.color}">${s.name}</span>`:''}).join('');
+    const div=document.createElement('div'); div.className='club-item';
+    div.innerHTML=`<span class="club-num">${String(i+1).padStart(2,'0')}</span>
+      <div style="flex:1"><div class="club-name-label">${club.name}</div>
+      <div class="club-series-tags">${tags||'<span style="font-size:11px;color:var(--muted)">Sin series asignadas</span>'}</div></div>
+      <button class="btn-del" onclick="deleteClub('${club.id}')">×</button>`;
+    list.appendChild(div);
+  });
+}
+function renderClubSelect(){
+  const sel=document.getElementById('assign-club-select'); const prev=sel.value;
+  sel.innerHTML='<option value="">— Selecciona un club para asignar series —</option>';
+  clubs.forEach(c=>{const opt=document.createElement('option');opt.value=c.id;opt.textContent=c.name;sel.appendChild(opt);});
+  sel.value=prev||''; sel.onchange=()=>loadAssignment(sel.value); if(prev) loadAssignment(prev);
+}
+function renderCheckboxes(){
+  ['senior','adulto','infantil'].forEach(cat=>{
+    const wrap=document.getElementById('checks-'+cat); wrap.innerHTML='';
+    SERIES.filter(s=>s.cat===cat).forEach(serie=>{
+      const lbl=document.createElement('label'); lbl.className='check-label';
+      lbl.innerHTML=`<input type="checkbox" id="chk_${serie.id}" value="${serie.id}"><span style="color:${serie.color}">${serie.name}</span>`;
+      wrap.appendChild(lbl);
+    });
+  });
+}
+function loadAssignment(clubId){
+  if(!clubId) return;
+  const assigned=assignments[clubId]||[];
+  SERIES.forEach(s=>{const chk=document.getElementById('chk_'+s.id);if(chk)chk.checked=assigned.includes(s.id);});
+}
+function saveAssignment(){
+  const clubId=document.getElementById('assign-club-select').value;
+  if(!clubId){showAlert('Selecciona un club primero.','error');return;}
+  assignments[clubId]=SERIES.filter(s=>document.getElementById('chk_'+s.id)?.checked).map(s=>s.id);
+  saveData(); renderClubList(); renderSerieGenList();
+  const club=clubs.find(c=>c.id===clubId);
+  showAlert(`Asignación guardada para "${club?.name}".`,'success');
+}
+function renderSerieGenList(){
+  const list=document.getElementById('serie-gen-list'); list.innerHTML='';
+  SERIES.forEach(serie=>{
+    const clubsIn=getClubsInSerie(serie.id);
+    const hasFix=(fixtures[serie.id]||[]).length>0;
+    let statusHtml='';
+    if(clubsIn.length<2) statusHtml=`<span class="gen-warn">⚠ Mínimo 2 clubes</span>`;
+    else if(hasFix)      statusHtml=`<span class="gen-ok">✓ Generado · ${fixtures[serie.id].length} fechas</span>`;
+    else                 statusHtml=`<span class="gen-pending">Listo para generar</span>`;
+    const div=document.createElement('div'); div.className='serie-gen-item';
+    div.innerHTML=`<span class="stag" style="background:${serie.color}22;color:${serie.color};white-space:nowrap">${serie.name}</span>
+      <span class="serie-gen-spacer"></span>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted)">${clubsIn.length} clubes</span>
+      ${statusHtml}`;
+    list.appendChild(div);
+  });
+}
+function roundRobin(names){
+  let t=[...names];
+  if(t.length%2!==0) t.push('__BYE__');
+  const n=t.length,fixed=t[0]; let rotating=t.slice(1); const rounds=[];
+  for(let r=0;r<n-1;r++){
+    const cur=[fixed,...rotating],round=[];
+    for(let m=0;m<n/2;m++) round.push({home:cur[m],away:cur[n-1-m]});
+    rounds.push(round);
+    rotating=[rotating[rotating.length-1],...rotating.slice(0,-1)];
+  }
+  return rounds;
+}
+function generateAllFixtures(){
+  let generated=0;
+  SERIES.forEach(serie=>{
+    const clubsIn=getClubsInSerie(serie.id);
+    if(clubsIn.length<2) return;
+    fixtures[serie.id]=roundRobin(clubsIn.map(c=>c.name)); generated++;
+  });
+  saveData(); renderSerieGenList(); renderHome();
+  showAlert(`✓ ${generated} fixture(s) generados exitosamente.`,'success');
+}
+function showAlert(msg,type){
+  const el=document.getElementById('alert-msg');
+  el.textContent=msg; el.className=`alert ${type} show`;
+  clearTimeout(el._t); el._t=setTimeout(()=>el.classList.remove('show'),3500);
+}
+function resetAll(){
+  if(!confirm('¿Borrar TODOS los datos? Esta acción no se puede deshacer.')) return;
+  clubs=[];assignments={};fixtures={};tournamentInfo={name:'',dateFrom:'',dateTo:''};
+  saveData(); loadTournamentInputs(); renderAdmin(); updateHeaderInfo();
+  showAlert('Todos los datos fueron eliminados.','success');
+}
+
+renderHome(); updateHeaderInfo();
+</script>
+</body>
+</html>
